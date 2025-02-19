@@ -10,6 +10,7 @@
 # Importing PIL.Image library and os library
 from PIL import Image #from PIL import Image 
 import os
+import random
 
 # Deletes old created images if they exist
 images = ["combinedFilters.jpg","filter1.jpg","filter2.jpg","filter3.jpg","grey.jpg"]
@@ -99,15 +100,15 @@ def filter1():
     r = p[0]
     g = p[1]
     b = p[2]
-    for i in range(0, len(new_pixels), 50):
-      newr = 0
-      newg = 0
-      newb = 0
+    newr = 0
+    newg = 0
+    newb = 0
     # Assign new red, green and blue components to pixel
     # at that specific location
     new_pixels[location] = (newr, newg, newb)
+    num = random.randint(1,25)
     # Changes the location to the next pixel in array
-    location = location + 1
+    location = location + num
   # Creates a new image, the same size as the original 
   # using RGB value format
   newImage = Image.new("RGB", img.size)
@@ -115,10 +116,7 @@ def filter1():
   newImage.putdata(new_pixels)
   # Sends the newImage back to the main portion of program
   return newImage
-  
-  
-print("Code for filter1")
-  newImage = img
+  #newImage = img
   return newImage
 
 #####################################
@@ -131,9 +129,24 @@ def filter2():
   return newImage
 
 def filter3():
-  print("Code for filter3")
-  newImage = img
-  return newImage
+    factor =  float(input("How bright would you like the picture (e.g., 1.2 for 20% brightness, 0.8 20% dimmer): "))
+
+    pixels = img.getdata() 
+    new_pixels = []
+    for i in pixels:
+        n = int(i[0] * factor)
+        m = int(i[1] * factor)
+        p = int(i[2] * factor)
+
+        n = min(255, max(0, n))
+        m = min(255, max(0, m))
+        p = min(255, max(0, p))
+
+        new_pixels.append((n, m, p))
+
+    newImage = Image.new("RGB", img.size)
+    newImage.putdata(new_pixels)
+    return newImage
 
 # Creates the four filter images and saves them to our files
 a = grey()
